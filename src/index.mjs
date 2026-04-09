@@ -16,7 +16,17 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/users", (req, res) => {
-    res.send(users);
+    console.log(req.query);
+    const {
+        query: { filter, value },
+    } = req;
+
+    if (!filter && !value)
+        return res.send(users);
+
+
+    if (filter && value)
+        return res.send(users.filter((user) => user[filter].includes(value)));
 
 });
 
@@ -28,7 +38,7 @@ app.get("/api/users/:id", (req, res) => { // video 3 dans playlist express;
     console.log(req.params);
     let id = parseInt(req.params.id);
     console.log(id);
-    console.log(typeof id)
+    console.log(typeof id);
     if (isNaN(id)) { return res.status(400).send({ msg: "bad request / invalid id" }); }
 
     const fuser = users.find((user) => user.id === id);
@@ -39,6 +49,7 @@ app.get("/api/users/:id", (req, res) => { // video 3 dans playlist express;
 
 
 });
+
 
 
 
