@@ -21,13 +21,12 @@ app.get("/api/users", (req, res) => {
         query: { filter, value },
     } = req;
 
-    if (!filter && !value)
+    if (!filter || !value)
         return res.send(users);
 
-
-    if (filter && value)
-        return res.send(users.filter((user) => user[filter].includes(value)));
-
+    return res.send(
+        users.filter((user) => String(user[filter] ?? "").includes(value))
+    );
 });
 
 app.get("/api/products", (req, res) => {
